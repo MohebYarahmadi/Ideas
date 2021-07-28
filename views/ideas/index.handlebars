@@ -1,0 +1,75 @@
+<section class="section">
+  <div class="columns is-multiline">
+
+      {{#each ideas}}
+
+    <div class="column is-half is-4 is-narrow">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            {{title}}
+          </p>
+          <button class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            {{details}}
+            <br>
+            <time datetime="{{date}}">Date: {{date}}</time>
+            <p>ID: {{_id}}</p>
+          </div>
+        </div>
+        <footer class="card-footer">
+          {{!-- <a href="#" class="card-footer-item">Save</a> --}}
+          <a href="/ideas/edit/{{_id}}" class="card-footer-item">Edit</a>
+          <a href="#" class="card-footer-item" id="deleteBtn">Delete</a>
+          {{!-- Make a model --}}
+          {{!-- <form method="post" action="/ideas/{{_id}}?_method=DELETE">
+          <input type="hidden" name="_method" value="DELETE">
+          <input type="submit" class="card-footer-item" value="Delete">
+          </form> --}}
+        </footer>
+      </div>
+
+    </div>
+      {{else}}
+      <p> No Ideas</p>
+      {{/each}}
+
+  </div>
+</section>
+<div class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Delete Item Confirmation</p>
+      <button class="delete" aria-label="close" id="closeModal"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- Content ... -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" id="confirmBtn">Confirm</button>
+      <button class="button" id="cancelBtn">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+  const deleteBtn = document.getElementById('deleteBtn');
+  const modal = document.querySelector('.modal');
+  const cancel = document.getElementById('cancelBtn');
+
+  deleteBtn.addEventListener('click', confirm);
+  cancel.addEventListener('click', confirm);
+  closeModal.addEventListener('click', confirm);
+
+  function confirm(e) {
+    modal.classList.toggle('is-active');
+  }
+
+</script>
