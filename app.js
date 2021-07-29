@@ -1,6 +1,8 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const methodOverride = require('method-override');
+const flash = require('connect-flash');
+const session = require('express-session');
 const mongoose = require('mongoose');
 
 
@@ -33,7 +35,24 @@ app.use(express.json());
 // Method override middleware for put requests
 app.use(methodOverride('_method'));
 
+// Express Session middleware
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+  // cookie: { secure: true }
+}));
 
+// Connect Flash middleware
+app.use(flash());
+
+// Global Variables
+app.use(function(req, res, next) {
+	res.locals.success_msg = req.flash('success_msg');
+	res.locals.error_msg = req.flash('error_msg');
+	res.locals.error = req.flash('error');
+	next();
+})
 
 
 
@@ -108,6 +127,7 @@ app.post('/ideas', (req, res) => {
 		new Idea(newUser)
 			.save()
 			.then(idea => {
+				req.flash('success_msg', 'Idea added');
 				res.redirect('/ideas');
 			})
 	}
@@ -125,6 +145,7 @@ app.put('/ideas/:id', (req, res) => {
 
 			idea.save()
 				.then(idea => {
+					req.flash('success_msg', 'Idea updated');
 					res.redirect('/ideas');
 				})
 		});
@@ -135,6 +156,7 @@ app.put('/ideas/:id', (req, res) => {
 app.delete('/ideas/:id', (req, res) => {
 	Idea.deleteOne({_id: req.params.id})
 	.then(() => {
+		req.flash('success_msg', 'Idea removed');
 		res.redirect('/ideas');
 	});
 });

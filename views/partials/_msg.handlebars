@@ -1,0 +1,26 @@
+{{#if success_msg}}
+	<div class="notification is-primary">
+		<button class="delete"></button>
+		{{success_msg}}
+		</div>
+{{/if}}
+
+{{#if error_msg}}
+	<div class="notification is-danger">
+		<button class="delete"></button>
+		{{error_msg}}
+		</div>
+{{/if}}
+
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const $notification = $delete.parentNode;
+
+    $delete.addEventListener('click', () => {
+      $notification.parentNode.removeChild($notification);
+    });
+  });
+});
+</script>
